@@ -5,7 +5,7 @@ import 'package:route_movies_app/style/my_themedata.dart';
 void main() {
   runApp(MyApp());
 }
-
+// added new branch
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
