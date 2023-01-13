@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class NewReleaseItem extends StatelessWidget {
+class movie_image_item extends StatelessWidget {
   String? posterPath;
 
-  NewReleaseItem(this.posterPath);
+  movie_image_item(this.posterPath);
 
   @override
   Widget build(BuildContext context) {

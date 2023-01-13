@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:route_movies_app/models/Movie.dart';
-import 'package:route_movies_app/screens/home_screen/new_released_item.dart';
+import 'package:route_movies_app/screens/home_screen/movie_image_item.dart';
 import 'package:route_movies_app/screens/home_screen/shimmer_ui/newreleased_section_shimmer.dart';
+import 'package:route_movies_app/screens/home_screen/shimmer_ui/top_rated_section_shimmer.dart';
 import 'package:route_movies_app/screens/home_screen/top_rated_item.dart';
 import 'package:route_movies_app/screens/home_screen/top_side_section.dart';
 
@@ -105,7 +106,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemBuilder: (context, index) {
                               return SizedBox(
                                 width: 100,
-                                child: NewReleaseItem(movies[index].posterPath),
+                                child:
+                                    movie_image_item(movies[index].posterPath),
                               );
                             }),
                       );
@@ -129,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     future: ApiManager.getTopRatedMovies(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const TopRatedSectionShimmer();
                       }
                       if (snapshot.hasError) {
                         return const Padding(

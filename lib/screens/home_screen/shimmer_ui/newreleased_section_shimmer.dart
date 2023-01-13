@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:route_movies_app/shared/widgets/skelton_shimmer.dart';
+import 'package:shimmer/shimmer.dart';
 
 class NewReleasedSectionShimmer extends StatelessWidget {
   const NewReleasedSectionShimmer({Key? key}) : super(key: key);
@@ -15,7 +16,10 @@ class NewReleasedSectionShimmer extends StatelessWidget {
             return const SizedBox(width: 16);
           },
           itemBuilder: (context, index) {
-            return SkeltonShimmer(width: 100, height: 130);
+            return Shimmer.fromColors(
+                baseColor: Colors.grey.withOpacity(.25),
+                highlightColor: Colors.white.withOpacity(.6),
+                child: SkeltonShimmer(width: 100, height: 130));
           }),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:route_movies_app/models/Latest.dart';
-import 'package:route_movies_app/screens/home_screen/new_released_item.dart';
+import 'package:route_movies_app/screens/home_screen/movie_image_item.dart';
 
 class TopSideSection extends StatelessWidget {
   Latest? movie;
@@ -77,7 +77,7 @@ class TopSideSection extends StatelessWidget {
             child: SizedBox(
                 width: 130,
                 height: 200,
-                child: NewReleaseItem(movie?.posterPath)),
+                child: movie_image_item(movie?.posterPath)),
           ),
         ],
       ),

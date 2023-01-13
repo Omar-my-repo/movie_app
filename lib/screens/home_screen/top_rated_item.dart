@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:route_movies_app/models/Movie.dart';
-import 'package:route_movies_app/screens/home_screen/new_released_item.dart';
+import 'package:route_movies_app/screens/home_screen/movie_image_item.dart';
 
 class TopRatedItem extends StatelessWidget {
   Movie movie;
@@ -19,7 +19,7 @@ class TopRatedItem extends StatelessWidget {
           SizedBox(
             height: 130,
             width: 100,
-            child: NewReleaseItem('${movie.posterPath}'),
+            child: movie_image_item('${movie.posterPath}'),
           ),
           Expanded(
             child: Container(
