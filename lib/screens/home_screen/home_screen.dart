@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:route_movies_app/models/Movie.dart';
 import 'package:route_movies_app/screens/home_screen/movie_card_widget.dart';
+import 'package:route_movies_app/screens/home_screen/shimmer_ui/newreleased_section_shimmer.dart';
 import 'package:route_movies_app/screens/home_screen/top_side_section.dart';
 
 import '../../models/Latest.dart';
@@ -74,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     future: ApiManager.getPopularMovies(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const NewReleasedSectionShimmer();
                       }
                       if (snapshot.hasError) {
                         return const Padding(
