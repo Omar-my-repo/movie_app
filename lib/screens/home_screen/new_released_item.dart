@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class MovieCardWidget extends StatelessWidget {
+class NewReleaseItem extends StatelessWidget {
   String? posterPath;
 
-  MovieCardWidget(this.posterPath);
+  NewReleaseItem(this.posterPath);
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(10.0),
+      borderRadius: BorderRadius.circular(8.0),
       child: Stack(
         children: [
           SizedBox(

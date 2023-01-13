@@ -20,7 +20,7 @@ class MyThemeData {
       //14 meduim bold for sections title
       bodyText2: TextStyle(color: Colors.white),
       //14 regular
-      caption: TextStyle(color: Color(0xffB5B4B4)), //12
+      caption: TextStyle(color: Colors.white), //12
     ),
     colorScheme: ColorScheme(
       primary: darkPrimaryColor,

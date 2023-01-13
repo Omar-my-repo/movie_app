@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:route_movies_app/models/Movie.dart';
-import 'package:route_movies_app/screens/home_screen/movie_card_widget.dart';
+import 'package:route_movies_app/screens/home_screen/new_released_item.dart';
 import 'package:route_movies_app/screens/home_screen/shimmer_ui/newreleased_section_shimmer.dart';
+import 'package:route_movies_app/screens/home_screen/top_rated_item.dart';
 import 'package:route_movies_app/screens/home_screen/top_side_section.dart';
 
 import '../../models/Latest.dart';
@@ -104,8 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemBuilder: (context, index) {
                               return SizedBox(
                                 width: 100,
-                                child:
-                                    MovieCardWidget(movies[index].posterPath),
+                                child: NewReleaseItem(movies[index].posterPath),
                               );
                             }),
                       );
@@ -115,7 +115,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              color: Theme.of(context).colorScheme.background,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -147,18 +148,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                       List<Movie> movies = snapshot.data!.results ?? [];
                       return SizedBox(
-                        height: 130,
+                        height: 210,
                         child: ListView.separated(
                             itemCount: movies.length,
                             scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
                             separatorBuilder: (context, index) {
                               return const SizedBox(width: 16);
                             },
                             itemBuilder: (context, index) {
                               return SizedBox(
                                 width: 100,
-                                child:
-                                    MovieCardWidget(movies[index].posterPath),
+                                child: TopRatedItem(movies[index]),
                               );
                             }),
                       );

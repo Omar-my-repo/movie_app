@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:route_movies_app/models/Latest.dart';
-import 'package:route_movies_app/screens/home_screen/movie_card_widget.dart';
+import 'package:route_movies_app/screens/home_screen/new_released_item.dart';
 
 class TopSideSection extends StatelessWidget {
   Latest? movie;
@@ -46,7 +46,7 @@ class TopSideSection extends StatelessWidget {
                           Text(
                             movie != null
                                 ? '${movie!.title}'
-                                : 'Adult Movie has been Blocked',
+                                : 'Adult Movie has Blocked',
                             style: Theme.of(context).textTheme.subtitle2,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -58,6 +58,7 @@ class TopSideSection extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style:
                                 Theme.of(context).textTheme.caption!.copyWith(
+                                  color: Color(0xffB5B4B4),
                                       fontWeight: FontWeight.bold,
                                     ),
                             //SizedBox(height: 16),
@@ -76,7 +77,7 @@ class TopSideSection extends StatelessWidget {
             child: SizedBox(
                 width: 130,
                 height: 200,
-                child: MovieCardWidget(movie?.posterPath)),
+                child: NewReleaseItem(movie?.posterPath)),
           ),
         ],
       ),
