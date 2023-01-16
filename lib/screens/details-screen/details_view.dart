@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:route_movies_app/screens/shared_widgets/top_rated_item.dart';
 import 'package:route_movies_app/servises/api_manager.dart';
 import '../shared_widgets/movie_image_item.dart';
 import 'details_widgets.dart';
@@ -27,6 +28,7 @@ class DetailsScreen extends StatelessWidget {
           }
           var movieDetails = snapshot.data!;
           var genresList = movieDetails.genres;
+          print(movieId);
           return Scaffold(
             backgroundColor: const Color(0xFF121312),
             appBar: AppBar(
@@ -94,7 +96,7 @@ class DetailsScreen extends StatelessWidget {
                                     width: MediaQuery.of(context).size.width *
                                         0.62,
                                     child: SingleChildScrollView(
-                                      scrollDirection:Axis.vertical,
+                                      scrollDirection: Axis.vertical,
                                       child: Column(
                                         children: [
                                           Text(
@@ -133,32 +135,39 @@ class DetailsScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Container(
-                    color: const Color(0xFF282A28),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    width: double.infinity,
-                    height: 270,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('More Like this '),
-                        ),
-                        Expanded(
-                          child: ListView.separated(
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(
-                              width: 8,
-                            ),
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) => TopRatedItemm(),
-                            itemCount: 5,
+                  FutureBuilder(
+                      future: ApiManager.getRecommendedMovie(movieId ?? ''),
+                      builder: (context, snapshot) {
+                        return Container(
+                          color: const Color(0xFF282A28),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          width: double.infinity,
+                          height: 280,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('More Like this '),
+                              ),
+                              Expanded(
+                                child: ListView.separated(
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                    width: 5,
+                                  ),
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) => SizedBox(
+                                    width: 120,
+                                      child: TopRatedItem(
+                                          snapshot.data!.results![index])),
+                                  itemCount: snapshot.data!.results!.length,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  )
+                        );
+                      })
                 ],
               ),
             ),

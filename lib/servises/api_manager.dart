@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:route_movies_app/models/Movie.dart';
 import 'package:route_movies_app/models/movie_details.dart';
 import 'package:route_movies_app/models/popular.dart';
 import 'package:route_movies_app/shared/contants.dart';
@@ -54,5 +55,12 @@ class ApiManager {
     var json = await getJsonResponse(movieDetailsEndPoint);
     MovieDetails movieDetails = MovieDetails.fromJson(json);
     return movieDetails;
+  }
+
+  static Future<Popular> getRecommendedMovie(String movieId) async {
+    String movieDetailsEndPoint = '3/movie/$movieId/recommendations';
+    var json = await getJsonResponse(movieDetailsEndPoint);
+    Popular moviesList = Popular.fromJson(json);
+    return moviesList;
   }
 }

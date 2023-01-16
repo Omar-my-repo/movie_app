@@ -5,7 +5,7 @@ import 'package:route_movies_app/screens/details-screen/details_view.dart';
 import 'package:route_movies_app/screens/shared_widgets/movie_image_item.dart';
 import 'package:route_movies_app/screens/home_screen/shimmer_ui/newreleased_section_shimmer.dart';
 import 'package:route_movies_app/screens/home_screen/shimmer_ui/top_rated_section_shimmer.dart';
-import 'package:route_movies_app/screens/home_screen/top_rated_item.dart';
+import 'package:route_movies_app/screens/shared_widgets/top_rated_item.dart';
 import 'package:route_movies_app/screens/home_screen/top_side_section.dart';
 
 import '../../models/latest.dart';
