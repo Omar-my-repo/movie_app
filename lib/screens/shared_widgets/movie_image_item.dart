@@ -7,6 +7,7 @@ class movie_image_item extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(posterPath);
     return ClipRRect(
       borderRadius: BorderRadius.circular(8.0),
       child: Stack(
@@ -19,6 +20,7 @@ class movie_image_item extends StatelessWidget {
                     width: double.infinity,
                     height: double.infinity,
                     image: 'http://image.tmdb.org/t/p/w500${posterPath}')
+                    
                 : Image.asset(
                     'assets/images/movie_poster_image_not_found.jpg',
                     fit: BoxFit.fill,

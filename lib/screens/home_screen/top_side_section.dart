@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:route_movies_app/models/Latest.dart';
-import 'package:route_movies_app/screens/home_screen/movie_image_item.dart';
+import 'package:route_movies_app/models/latest.dart';
+import 'package:route_movies_app/screens/shared_widgets/movie_image_item.dart';
 
 class TopSideSection extends StatelessWidget {
   Latest? movie;

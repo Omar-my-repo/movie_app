@@ -1,4 +1,4 @@
-import 'Movie.dart';
+import 'movie.dart';
 
 /// adult : false
 /// backdrop_path : "/fCayJrkfRaCRCTh8GqN30f8oyQF.jpg"

@@ -1,4 +1,4 @@
-import 'Movie.dart';
+import 'movie.dart';
 
 /// status_message : "Invalid API key: You must be granted a valid key."
 /// success : false

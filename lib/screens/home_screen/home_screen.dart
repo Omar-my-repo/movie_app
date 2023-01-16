@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:route_movies_app/models/Movie.dart';
-import 'package:route_movies_app/screens/home_screen/movie_image_item.dart';
+import 'package:route_movies_app/models/movie.dart';
+import 'package:route_movies_app/screens/details-screen/details_view.dart';
+import 'package:route_movies_app/screens/shared_widgets/movie_image_item.dart';
 import 'package:route_movies_app/screens/home_screen/shimmer_ui/newreleased_section_shimmer.dart';
 import 'package:route_movies_app/screens/home_screen/shimmer_ui/top_rated_section_shimmer.dart';
 import 'package:route_movies_app/screens/home_screen/top_rated_item.dart';
 import 'package:route_movies_app/screens/home_screen/top_side_section.dart';
 
-import '../../models/Latest.dart';
-import '../../models/Popular.dart';
+import '../../models/latest.dart';
+import '../../models/popular.dart';
 import '../../servises/api_manager.dart';
 import 'shimmer_ui/top_section_shimmer.dart';
 
@@ -35,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   if (snapshot.hasError) {
                     return const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 30),
+                      padding: EdgeInsets.symmetric(horizontal:30),
                       child: Center(
                         child: Text(
                           'Something went wrong pleas check your internet connection',
@@ -58,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return TopSideSection(newMovie);
                   }
                   print('===adult movie has been blocked===');
-
+                  print('-------> movie Id : ${movie.id}');
                   return TopSideSection(newMovie);
                 }),
             Container(
@@ -106,8 +107,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemBuilder: (context, index) {
                               return SizedBox(
                                 width: 100,
-                                child:
-                                    movie_image_item(movies[index].posterPath),
+                                child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                DetailsScreen(movies[index].id.toString()),
+                                          ));
+                                    },
+                                    child: movie_image_item(
+                                        movies[index].posterPath)),
                               );
                             }),
                       );

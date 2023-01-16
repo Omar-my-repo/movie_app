@@ -1,4 +1,4 @@
-import 'package:route_movies_app/models/MovieDetails.dart';
+import 'package:route_movies_app/models/movie_details.dart';
 
 /// status_message : "Invalid API key: You must be granted a valid key."
 /// success : false
