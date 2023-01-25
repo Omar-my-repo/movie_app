@@ -15,8 +15,8 @@ class _HomeLayoutState extends State<HomeLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PersistentTabView(
+    return SafeArea(
+      child: PersistentTabView(
         context,
         controller: _controller,
         screens: _buildScreens(),
@@ -38,12 +38,12 @@ class _HomeLayoutState extends State<HomeLayout> {
         ),
         popAllScreensOnTapOfSelectedTab: true,
         popActionScreens: PopActionScreensType.all,
-        itemAnimationProperties: ItemAnimationProperties(
+        itemAnimationProperties: const ItemAnimationProperties(
           // Navigation Bar's items animation properties.
           duration: Duration(milliseconds: 200),
           curve: Curves.ease,
         ),
-        screenTransitionAnimation: ScreenTransitionAnimation(
+        screenTransitionAnimation: const ScreenTransitionAnimation(
           // Screen transition animation on change of selected tab.
           animateTabTransition: true,
           curve: Curves.ease,
@@ -57,9 +57,9 @@ class _HomeLayoutState extends State<HomeLayout> {
 
   List<Widget> _buildScreens() {
     return [
-      HomeScreen(),
+      const HomeScreen(),
       Container(
-        child: Center(
+        child: const Center(
           child: Text(
             'SEARCH',
             style: TextStyle(color: Colors.red),
@@ -67,7 +67,7 @@ class _HomeLayoutState extends State<HomeLayout> {
         ),
       ),
       Container(
-        child: Center(
+        child: const Center(
           child: Text(
             'BROWSE',
             style: TextStyle(color: Colors.red),
@@ -75,7 +75,7 @@ class _HomeLayoutState extends State<HomeLayout> {
         ),
       ),
       Container(
-        child: Center(
+        child: const Center(
           child: Text(
             'WATCHLIST',
             style: TextStyle(color: Colors.red),
@@ -89,25 +89,25 @@ class _HomeLayoutState extends State<HomeLayout> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.home),
+        icon: const Icon(Icons.home),
         title: ("HOME"),
         activeColorPrimary: Theme.of(context).colorScheme.secondary,
         inactiveColorPrimary: Theme.of(context).colorScheme.onSecondary,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.search),
+        icon: const Icon(CupertinoIcons.search),
         title: ("SEARCH"),
         activeColorPrimary: Theme.of(context).colorScheme.secondary,
         inactiveColorPrimary: Theme.of(context).colorScheme.onSecondary,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.movie_creation),
+        icon: const Icon(Icons.movie_creation),
         title: ("BROWSE"),
         activeColorPrimary: Theme.of(context).colorScheme.secondary,
         inactiveColorPrimary: Theme.of(context).colorScheme.onSecondary,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.bookmark_border_outlined),
+        icon: const Icon(Icons.bookmark_border_outlined),
         title: ("WATCHLIST"),
         activeColorPrimary: Theme.of(context).colorScheme.secondary,
         inactiveColorPrimary: Theme.of(context).colorScheme.onSecondary,
