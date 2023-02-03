@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:route_movies_app/screens/home_screen/home_screen.dart';
+import 'package:route_movies_app/screens/search/search_screen.dart';
 
 class HomeLayout extends StatefulWidget {
   static const String routeName = 'homeLayout';
@@ -58,14 +59,7 @@ class _HomeLayoutState extends State<HomeLayout> {
   List<Widget> _buildScreens() {
     return [
       const HomeScreen(),
-      Container(
-        child: const Center(
-          child: Text(
-            'SEARCH',
-            style: TextStyle(color: Colors.red),
-          ),
-        ),
-      ),
+      SearchScreen(),
       Container(
         child: const Center(
           child: Text(
