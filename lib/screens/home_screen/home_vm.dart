@@ -1,7 +1,8 @@
 import 'package:route_movies_app/base.dart';
 import 'package:route_movies_app/models/latest.dart';
 import 'package:route_movies_app/screens/home_screen/home_navigator.dart';
-import 'package:route_movies_app/servises/api_manager.dart';
+
+import '../../services/remote/api_manager.dart';
 
 class HomeVieModel extends BaseViewModel<HomeNavigator> {
   bool isSelected = false;

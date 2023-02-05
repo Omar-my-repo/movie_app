@@ -80,19 +80,19 @@ class CasheHelper extends ChangeNotifier {
  //! check if the movie is in Local list or not 
  Future<bool?> checkMovieIsExist({required num? id})async{
   var box =await creatBoxDb();
-  //bool isExist=false;
+  bool isExist=false;
   List<LocalMovieModel> movieList = box!.values.map((value) => value as LocalMovieModel).toList();
   for (var element in movieList) { 
     if(element.id==id){
-       //isExist= true;
+       isExist= true;
        debugPrint('true');
        return true;
       }
-      //isExist= false;
+      isExist= false;
       debugPrint('false');
  }
  notifyListeners();
-return false;
+return isExist;
 
 }
 

@@ -1,7 +1,8 @@
 import 'package:route_movies_app/base.dart';
 import 'package:route_movies_app/models/movie.dart';
 import 'package:route_movies_app/screens/search/search_navigator.dart';
-import 'package:route_movies_app/servises/api_manager.dart';
+
+import '../../services/remote/api_manager.dart';
 
 class SearchViewModel extends BaseViewModel<SearchNavigator> {
   List<Movie> filterdMovies = [];

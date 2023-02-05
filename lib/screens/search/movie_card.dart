@@ -16,7 +16,7 @@ class MovieCard extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => DetailsScreen(movie.id.toString()),
+              builder: (context) => DetailsScreen(movieId:movie.id),
             ));
       },
       child: SizedBox(
