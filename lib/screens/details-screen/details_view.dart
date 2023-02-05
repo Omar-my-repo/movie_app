@@ -2,17 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:route_movies_app/screens/shared_widgets/top_rated_item.dart';
-import 'package:route_movies_app/servises/api_manager.dart';
+import 'package:route_movies_app/services/remote/api_manager.dart';
+import '../../shared/contants.dart';
 import '../shared_widgets/movie_image_item.dart';
 import 'details_widgets.dart';
 
 class DetailsScreen extends StatelessWidget {
   String? movieId;
-  DetailsScreen(this.movieId, {super.key});
-  double roundDouble(double value, int places) {
-    num mod = pow(10.0, places) as double;
-    return ((value * mod).round().toDouble() / mod);
-  }
+  DetailsScreen({this.movieId, super.key});
 
   static const String routeName = 'DetailsScreen';
 
@@ -23,11 +20,26 @@ class DetailsScreen extends StatelessWidget {
     return FutureBuilder(
         future: ApiManager.getMovieDetails(movieId ?? ''),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              movieId!.isEmpty ||
+              movieId == null) {
+            return Image.asset(
+              'assets/images/loading.gif',
+              height: double.infinity,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            );
+          } else if (snapshot.hasError) {
+            return Image.asset(
+              'assets/images/loading.gif',
+              height: double.infinity,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            );
           }
           var movieDetails = snapshot.data!;
           var genresList = movieDetails.genres;
+
           print(movieId);
           return Scaffold(
             backgroundColor: const Color(0xFF121312),
@@ -41,12 +53,7 @@ class DetailsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   // Cover image in the top
-                  Image.network(
-                    'http://image.tmdb.org/t/p/w500/${movieDetails.posterPath}',
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.50,
-                    fit: BoxFit.contain,
-                  ),
+                  CoverDetailsImage(imagePath: movieDetails.posterPath),
 
                   //Details Container in the center of Details screen
                   Container(
@@ -72,17 +79,23 @@ class DetailsScreen extends StatelessWidget {
                             Container(
                                 padding:
                                     const EdgeInsets.only(top: 10, right: 10),
-                                width: MediaQuery.of(context).size.width * 0.30,
-                                height: 150,
+                                width: MediaQuery.of(context).size.width * 0.25,
+                                height: 140,
                                 child:
-                                    movie_image_item(movieDetails.posterPath)),
+                                    movie_image_item(
+                                      id:movieDetails.id?.toInt(),
+                                      date:movieDetails.releaseDate,
+                                      posterPath:movieDetails.posterPath,
+                                      title:movieDetails.title,
+                                      description:movieDetails.overview,
+                                    )),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.62,
+                                      MediaQuery.of(context).size.width * 0.67,
                                   child: SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
                                     child: Row(
@@ -94,7 +107,7 @@ class DetailsScreen extends StatelessWidget {
                                 SizedBox(
                                     height: 80,
                                     width: MediaQuery.of(context).size.width *
-                                        0.62,
+                                        0.67,
                                     child: SingleChildScrollView(
                                       scrollDirection: Axis.vertical,
                                       child: Column(
@@ -138,6 +151,14 @@ class DetailsScreen extends StatelessWidget {
                   FutureBuilder(
                       future: ApiManager.getRecommendedMovie(movieId ?? ''),
                       builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Image.asset(
+                            'assets/images/loading.gif',
+                            height: double.infinity,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          );
+                        }
                         return Container(
                           color: const Color(0xFF282A28),
                           padding: const EdgeInsets.symmetric(vertical: 12),
@@ -157,10 +178,20 @@ class DetailsScreen extends StatelessWidget {
                                     width: 5,
                                   ),
                                   scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) => SizedBox(
-                                    width: 120,
-                                      child: TopRatedItem(
-                                          snapshot.data!.results![index])),
+                                  itemBuilder: (context, index) => InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => DetailsScreen(
+                                                movieId: snapshot.data!.results![index].id.toString()),
+                                          ));
+                                    },
+                                    child: SizedBox(
+                                        width: 120,
+                                        child: TopRatedItem(
+                                            snapshot.data!.results![index])),
+                                  ),
                                   itemCount: snapshot.data!.results!.length,
                                 ),
                               ),

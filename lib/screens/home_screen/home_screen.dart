@@ -7,10 +7,11 @@ import 'package:route_movies_app/screens/home_screen/shimmer_ui/newreleased_sect
 import 'package:route_movies_app/screens/home_screen/shimmer_ui/top_rated_section_shimmer.dart';
 import 'package:route_movies_app/screens/shared_widgets/top_rated_item.dart';
 import 'package:route_movies_app/screens/home_screen/top_side_section.dart';
+import 'package:route_movies_app/services/local/cash_helper.dart';
 
 import '../../models/latest.dart';
 import '../../models/popular.dart';
-import '../../servises/api_manager.dart';
+import '../../services/remote/api_manager.dart';
 import 'shimmer_ui/top_section_shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -36,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   if (snapshot.hasError) {
                     return const Padding(
-                      padding: EdgeInsets.symmetric(horizontal:30),
+                      padding: EdgeInsets.symmetric(horizontal: 30),
                       child: Center(
                         child: Text(
                           'Something went wrong pleas check your internet connection',
@@ -96,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Text(snapshot.data!.statusMessage!));
                       }
                       List<Movie> movies = snapshot.data!.results ?? [];
+                      
                       return SizedBox(
                         height: 130,
                         child: ListView.separated(
@@ -105,6 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               return const SizedBox(width: 16);
                             },
                             itemBuilder: (context, index) {
+                              debugPrint('index : $index');
                               return SizedBox(
                                 width: 100,
                                 child: InkWell(
@@ -112,12 +115,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) =>
-                                                DetailsScreen(movies[index].id.toString()),
+                                            builder: (context) => DetailsScreen(
+                                                movieId: movies[index]
+                                                    .id
+                                                    .toString()),
                                           ));
                                     },
                                     child: movie_image_item(
-                                        movies[index].posterPath)),
+                                      id:movies[index].id?.toInt(),
+                                      date:movies[index].releaseDate,
+                                      posterPath: movies[index].posterPath,
+                                      title:movies[index].title,
+                                      description: movies[index].overview,
+
+                                    )),
                               );
                             }),
                       );
@@ -159,6 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Text(snapshot.data!.statusMessage!));
                       }
                       List<Movie> movies = snapshot.data!.results ?? [];
+
                       return SizedBox(
                         height: 210,
                         child: ListView.separated(
@@ -169,10 +181,20 @@ class _HomeScreenState extends State<HomeScreen> {
                               return const SizedBox(width: 16);
                             },
                             itemBuilder: (context, index) {
-                              return SizedBox(
-                                width: 100,
-                                child: TopRatedItem(movies[index]),
-                              );
+                              return InkWell(
+                                  onTap: (() {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => DetailsScreen(
+                                              movieId:
+                                                  movies[index].id.toString()),
+                                        ));
+                                  }),
+                                  child: SizedBox(
+                                    width: 100,
+                                    child: TopRatedItem(movies[index]),
+                                  ));
                             }),
                       );
                     },

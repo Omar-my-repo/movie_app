@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:route_movies_app/screens/home_screen/home_screen.dart';
+import 'package:route_movies_app/screens/watch_list/watch_list.dart';
+import 'package:route_movies_app/services/local/cash_helper.dart';
 
 class HomeLayout extends StatefulWidget {
   static const String routeName = 'homeLayout';
@@ -74,14 +76,7 @@ class _HomeLayoutState extends State<HomeLayout> {
           ),
         ),
       ),
-      Container(
-        child: const Center(
-          child: Text(
-            'WATCHLIST',
-            style: TextStyle(color: Colors.red),
-          ),
-        ),
-      ),
+      const WatchList()
       // Container()
     ];
   }
@@ -111,6 +106,7 @@ class _HomeLayoutState extends State<HomeLayout> {
         title: ("WATCHLIST"),
         activeColorPrimary: Theme.of(context).colorScheme.secondary,
         inactiveColorPrimary: Theme.of(context).colorScheme.onSecondary,
+         
       ),
     ];
   }

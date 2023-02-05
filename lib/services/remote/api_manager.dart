@@ -5,9 +5,10 @@ import 'package:http/http.dart';
 import 'package:route_movies_app/models/Movie.dart';
 import 'package:route_movies_app/models/movie_details.dart';
 import 'package:route_movies_app/models/popular.dart';
+import 'package:route_movies_app/services/local/cash_helper.dart';
 import 'package:route_movies_app/shared/contants.dart';
 
-import '../models/latest.dart';
+import '../../models/latest.dart';
 
 class ApiManager {
   //generic function to get any api PATH
@@ -49,7 +50,9 @@ class ApiManager {
     print('recommended section movies length: ${moviesList.results?.length} ');
     return moviesList;
   }
+  
 
+   //Movie Details Screen data 
   static Future<MovieDetails> getMovieDetails(String movieId) async {
     String movieDetailsEndPoint = '3/movie/$movieId';
     var json = await getJsonResponse(movieDetailsEndPoint);
@@ -57,8 +60,9 @@ class ApiManager {
     return movieDetails;
   }
 
-  static Future<Popular> getRecommendedMovie(String movieId) async {
-    String movieDetailsEndPoint = '3/movie/$movieId/recommendations';
+   //More Like This data 
+  static Future<Popular> getRecommendedMovie(String? movieId) async {
+    String movieDetailsEndPoint = '3/movie/$movieId/similar';
     var json = await getJsonResponse(movieDetailsEndPoint);
     Popular moviesList = Popular.fromJson(json);
     return moviesList;
