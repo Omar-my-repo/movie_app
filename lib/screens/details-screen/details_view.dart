@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:route_movies_app/screens/shared_widgets/top_rated_item.dart';
 import 'package:route_movies_app/services/remote/api_manager.dart';
@@ -8,7 +6,7 @@ import '../shared_widgets/movie_image_item.dart';
 import 'details_widgets.dart';
 
 class DetailsScreen extends StatelessWidget {
-  String? movieId;
+  num? movieId;
   DetailsScreen({this.movieId, super.key});
 
   static const String routeName = 'DetailsScreen';
@@ -18,10 +16,9 @@ class DetailsScreen extends StatelessWidget {
     var textTheme = Theme.of(context).textTheme;
 
     return FutureBuilder(
-        future: ApiManager.getMovieDetails(movieId ?? ''),
+        future: ApiManager.getMovieDetails(movieId!),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting ||
-              movieId!.isEmpty ||
               movieId == null) {
             return Image.asset(
               'assets/images/loading.gif',
@@ -149,7 +146,7 @@ class DetailsScreen extends StatelessWidget {
                     ),
                   ),
                   FutureBuilder(
-                      future: ApiManager.getRecommendedMovie(movieId ?? ''),
+                      future: ApiManager.getRecommendedMovie(movieId!),
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
                           return Image.asset(
@@ -184,7 +181,7 @@ class DetailsScreen extends StatelessWidget {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => DetailsScreen(
-                                                movieId: snapshot.data!.results![index].id.toString()),
+                                                movieId: snapshot.data!.results![index].id),
                                           ));
                                     },
                                     child: SizedBox(

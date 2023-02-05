@@ -25,22 +25,23 @@ void main() async {
 // added new branch
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<CasheHelper>(
-        create: (_) => CasheHelper()..getAllDataFromLocal(),
-        child: Consumer<CasheHelper>(
-          builder: (context, value, child) {
+        create: (_) => CasheHelper(),
+          builder: (context, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             initialRoute: HomeLayout.routeName,
             routes: {
               HomeLayout.routeName: (_) => HomeLayout(),
-              DetailsScreen.routeName: (_) => DetailsScreen(movieId: '')
+              DetailsScreen.routeName: (_) => DetailsScreen()
             },
             theme: MyThemeData.darkTheme,
           );
-        }));
+        });
+    //edited by omar
+
+
   }
 }
