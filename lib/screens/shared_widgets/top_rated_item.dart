@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:route_movies_app/models/movie.dart';
 import 'package:route_movies_app/screens/shared_widgets/movie_image_item.dart';
 
+import '../../shared/contants.dart';
+
 class TopRatedItem extends StatelessWidget {
   Movie movie;
 
@@ -9,6 +11,7 @@ class TopRatedItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(movie.id);
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -19,7 +22,7 @@ class TopRatedItem extends StatelessWidget {
           SizedBox(
             height: 130,
             width: 100,
-            child: movie_image_item('${movie.posterPath}'),
+            child: movie.posterPath!=null ? movie_image_item(posterPath:movie.posterPath,id:movie.id,date:movie.releaseDate,title:movie.title,description:movie.overview,):Image.asset('assets/images/loading.gif',fit:BoxFit.cover,),
           ),
           Expanded(
             child: Container(
@@ -36,7 +39,7 @@ class TopRatedItem extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        '${movie.voteAverage}',
+                        '${roundDouble(movie.voteAverage!.toDouble(), 1)}',
                         style: Theme.of(context).textTheme.caption,
                       )
                     ],

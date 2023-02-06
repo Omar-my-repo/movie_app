@@ -61,14 +61,16 @@ class _TrailerScreenState extends State<TrailerScreen> {
                   ),
                 ),
                 Expanded(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 20,),
-                      Text(trailers.name??'',style:const TextStyle(fontSize:20),),
-                      const SizedBox(height: 10,),
-                       Text(trailers.official==false?'This trailer is non Oficial on ${trailers.site}':'This is Oficial trailer on ${trailers.site}'),
-                       
-                    ],
+                  child: Container(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 20,),
+                        Text(trailers.name??'',style:const TextStyle(fontSize:20),),
+                        const SizedBox(height: 10,),
+                         Text(trailers.official==false?'This trailer is non Oficial on ${trailers.site}':'This is Oficial trailer on ${trailers.site}'),
+                         
+                      ],
+                    ),
                   ),
                 )
               ],
