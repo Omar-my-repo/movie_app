@@ -96,5 +96,17 @@ return isExist;
 
 }
 
+  //!Creat Hive Box Database
+  Future<void> clearBoxDb() async {
+    try {
+      var box = await Hive.openBox('movie');
+      debugPrint('Box is created !!');
+      box.clear();
+
+    } catch (error) {
+      debugPrint('---->$error');
+    }
+    return null;
+  }
 
 }

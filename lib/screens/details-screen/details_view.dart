@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:route_movies_app/screens/shared_widgets/top_rated_item.dart';
+import 'package:route_movies_app/screens/trailers_screen/trailers.dart';
 import 'package:route_movies_app/services/remote/api_manager.dart';
 import '../../shared/contants.dart';
 import '../shared_widgets/movie_image_item.dart';
@@ -50,7 +51,11 @@ class DetailsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   // Cover image in the top
-                  CoverDetailsImage(imagePath: movieDetails.posterPath),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => TrailerScreen(id: movieDetails.id),));
+                    },
+                    child: CoverDetailsImage(imagePath: movieDetails.posterPath)),
 
                   //Details Container in the center of Details screen
                   Container(

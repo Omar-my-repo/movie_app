@@ -9,6 +9,7 @@ String popularMoviesEndPoint = '/3/movie/popular';
 String topRatedMoviesEndPoint = '/3/movie/top_rated';
 
 
+
 double roundDouble(double value, int places) {
     num mod = pow(10.0, places) as double;
     return ((value * mod).round().toDouble() / mod);

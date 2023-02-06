@@ -26,13 +26,21 @@ import 'package:route_movies_app/models/movie_details.dart';
  
   @override
   Widget build(BuildContext context) {
-    return FadeInImage.assetNetwork(
-                    placeholder:'assets/images/loading.gif' ,
-                    image:'http://image.tmdb.org/t/p/w500/$imagePath',
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.50,
-                    fit: BoxFit.contain,
-                  );
+    return Stack(
+      children: [
+        FadeInImage.assetNetwork(
+                        placeholder:'assets/images/loading.gif' ,
+                        image:'http://image.tmdb.org/t/p/w500/$imagePath',
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.50,
+                        fit: BoxFit.contain,
+                      ),
+        Positioned(
+          top: MediaQuery.of(context).size.height*0.20,
+          left: 145,
+        child: Image.asset('assets/images/play-button.png',height: 70,width: 70,))
+      ],
+    );
   }
 }
 

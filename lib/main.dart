@@ -15,8 +15,9 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(LocalMovieModelAdapter());
   await casheHelper.creatBoxDb();
-  //casheHelper.deleteItemFromLocal(0);
   await casheHelper.getAllDataFromLocal();
+  await casheHelper.clearBoxDb();
+  //casheHelper.deleteItemFromLocal(0);
   //bool x=await casheHelper.checkMovieIsExist(50000);
   //debugPrint('$x');
 

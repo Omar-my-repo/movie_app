@@ -8,6 +8,7 @@ import 'package:route_movies_app/services/local/cash_helper.dart';
 import 'package:route_movies_app/shared/contants.dart';
 
 import '../../models/latest.dart';
+import '../../models/trailers.dart';
 
 class ApiManager {
   //generic function to get any api PATH
@@ -71,4 +72,14 @@ class ApiManager {
     Popular moviesList = Popular.fromJson(json);
     return moviesList;
   }
+
+  static  Future<TrailersModel> getMovieTrailerByID(num id) async {
+    String trailersEndPount = '/3/movie/$id/videos';
+    var json = await getJsonResponse(endPoint: trailersEndPount, query: trailersEndPount);
+    print(json.toString());
+    TrailersModel moviesTrailer = TrailersModel.fromJson(json);
+    //Results results = Results.fromJson(json);
+    return moviesTrailer;
+  }
+
 }
