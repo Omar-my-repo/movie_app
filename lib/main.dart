@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:route_movies_app/screens/details-screen/details_view.dart';
-import 'package:route_movies_app/screens/home_layout/home_layout.dart';
-import 'package:route_movies_app/services/local/cash_helper.dart';
+import 'package:route_movies_app/presentation/screens/details-screen/details_view.dart';
+import 'package:route_movies_app/presentation/screens/home_layout/home_layout.dart';
+import 'package:route_movies_app/data/data_sources/services/local/cash_helper.dart';
+import 'package:route_movies_app/presentation/screens/watch_list/watch_list_view_model.dart';
 import 'package:route_movies_app/style/my_themedata.dart';
 
-import 'models/watch_list.dart';
+import 'data/models/watch_list.dart';
 
 CasheHelper casheHelper = CasheHelper();
 void main() async {
@@ -28,8 +29,8 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<CasheHelper>(
-        create: (_) => CasheHelper(),
+    return ChangeNotifierProvider<WatchListViewModel>(
+        create: (_) => WatchListViewModel(),
           builder: (context, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
