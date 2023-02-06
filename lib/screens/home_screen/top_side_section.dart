@@ -16,7 +16,7 @@ class TopSideSection extends StatelessWidget {
         children: [
           Column(
             children: [
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 200,
                 child: movie != null && movie?.backdropPath != null
@@ -77,7 +77,13 @@ class TopSideSection extends StatelessWidget {
             child: SizedBox(
                 width: 130,
                 height: 200,
-                child: movie_image_item(movie?.posterPath)),
+                child: movie_image_item(
+                  id:movie?.id?.toInt(),
+                  date:movie?.releaseDate,
+                  title: movie?.title,
+                  posterPath:movie?.posterPath,
+                  description:movie?.overview,
+                )),
           ),
         ],
       ),
