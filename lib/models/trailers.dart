@@ -1,24 +1,5 @@
 class TrailersModel {
   int? id;
-  List<Results>? results;
-
-  TrailersModel({this.id, this.results});
-
-  TrailersModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    if (json['results'] != null) {
-      results = <Results>[];
-      json['results'].forEach((v) {
-        results!.add(Results.fromJson(v));
-      });
-    }
-  }
-
-}
-
-class Results {
-  String? iso6391;
-  String? iso31661;
   String? name;
   String? key;
   String? site;
@@ -26,7 +7,40 @@ class Results {
   String? type;
   String? publishedAt;
   bool? official;
-  String? id;
+
+  TrailersModel(
+      {this.id,
+      this.key,
+      this.name,
+      this.official,
+      this.publishedAt,
+      this.site,
+      this.size,
+      this.type});
+
+  TrailersModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    key = json['key'];
+    site = json['site'];
+    size = json['size'];
+    type = json['type'];
+    publishedAt = json['published_at'];
+    official = json['official'];
+  }
+
+}
+
+/*class Results {
+
+  String? name;
+  String? key;
+  String? site;
+  int? size;
+  String? type;
+  String? publishedAt;
+  bool? official;
+
 
   Results(
       {this.iso6391,
@@ -53,3 +67,4 @@ class Results {
     id = json['id'];
   }
 }
+*/
