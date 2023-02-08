@@ -22,7 +22,18 @@ class TopRatedItem extends StatelessWidget {
           SizedBox(
             height: 130,
             width: 100,
-            child: movie.posterPath!=null ? movie_image_item(posterPath:movie.posterPath,id:movie.id,date:movie.releaseDate,title:movie.title,description:movie.overview,):Image.asset('assets/images/loading.gif',fit:BoxFit.cover,),
+            child: movie.posterPath != null
+                ? movie_image_item(
+                    posterPath: movie.posterPath,
+                    id: movie.id,
+                    date: movie.releaseDate,
+                    title: movie.title,
+                    description: movie.overview,
+                  )
+                : Image.asset(
+                    'assets/images/loading.gif',
+                    fit: BoxFit.cover,
+                  ),
           ),
           Expanded(
             child: Container(

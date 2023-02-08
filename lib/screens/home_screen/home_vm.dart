@@ -1,23 +1,57 @@
+import 'dart:math';
+
 import 'package:route_movies_app/base.dart';
-import 'package:route_movies_app/models/latest.dart';
+import 'package:route_movies_app/models/movie.dart';
 import 'package:route_movies_app/screens/home_screen/home_navigator.dart';
 
+import '../../models/popular.dart';
 import '../../services/remote/api_manager.dart';
 
-class HomeVieModel extends BaseViewModel<HomeNavigator> {
-  bool isSelected = false;
+class HomeViewModel extends BaseViewModel<HomeNavigator> {
+  String defaultErrorMessage = 'Something went wrong';
 
-  Future<Latest> getLatestMovies() async {
+  Movie? topSectionMovie = null;
+  String? topSectionErrorMessage = null;
+
+  List<Movie>? newReleasedMovies;
+  String? newReleasedErrorMessage;
+
+  List<Movie>? recommendedSectionMovies;
+  String? recommendedSectionErrorMessage;
+
+  void getLatestMovies() async {
     try {
-      return await ApiManager.getLatestMovie();
+      /// filtering movies and return random one
+      Popular response = await ApiManager.getLatestMovie();
+      List<Movie> familyMovies =
+          response.results!.where((movie) => movie.adult == false).toList();
+      Random random = new Random();
+      int randomNumber = random.nextInt(familyMovies.length);
+      topSectionMovie = familyMovies[randomNumber];
+      notifyListeners();
     } catch (e) {
-      navigator!.showMessage('Something went wrong');
-      throw e;
+      topSectionErrorMessage = defaultErrorMessage;
     }
   }
 
-// setDocument(Movie movie) {
-//   FirebaseUtils.instance
-//       .setDocument(path: 'watchlist/${movie.id}', data: movie.toJson());
-// }
+  void getPopularMovies() async {
+    try {
+      Popular response = await ApiManager.getPopularMovies();
+      newReleasedMovies = response.results;
+      notifyListeners();
+    } catch (e) {
+      newReleasedErrorMessage = defaultErrorMessage;
+    }
+  }
+
+  void getTopRatedMovies() async {
+    try {
+      var response = await ApiManager.getTopRatedMovies();
+      recommendedSectionMovies = response.results;
+
+      notifyListeners();
+    } catch (e) {
+      recommendedSectionErrorMessage = defaultErrorMessage;
+    }
+  }
 }

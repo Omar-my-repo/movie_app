@@ -2,111 +2,80 @@ import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:route_movies_app/models/watch_list.dart';
 
-class CasheHelper extends ChangeNotifier {
-
+class CasheHelper {
   //bool isExist=false;
-  List<LocalMovieModel> movieListToAll=[];
+//  List<LocalMovieModel> movieListToAll=[];
 
   //!Creat Hive Box Database
   Future<Box<dynamic>?> creatBoxDb() async {
     try {
       var box = await Hive.openBox('movie');
-      debugPrint('Box is created !!');
-      //box.clear();
       return box;
     } catch (error) {
-      debugPrint('---->$error');
+      return null;
     }
-    return null;
   }
 
 //! Add Movie Model To DB ---> Hive
-  void storeDataLocally({
-    required id,
-    required String title,
-    required String date ,
-    required String imageUrl,
-    required String description
-    }){
-    try{
+  void storeDataLocally(
+      {required id,
+      required String title,
+      required String date,
+      required String imageUrl,
+      required String description}) {
+    try {
       var box = Hive.box('movie');
-      box.add(LocalMovieModel(id,title,date,imageUrl,description));
-      //movieListToAll.add(LocalMovieModel(id,title,date,imageUrl,description));
-      notifyListeners();
+      box.add(LocalMovieModel(id, title, date, imageUrl, description));
       debugPrint('Added Successfully');
-    }
-    catch(error){
-       debugPrint('--->$error<---');
+    } catch (error) {
+      // debugPrint('--->$error<---');
     }
   }
 
-   //! get All Data from Local DB -->Hive
-   Future<List<LocalMovieModel>> getAllDataFromLocal()async{
-    var box =await creatBoxDb();
-    List<LocalMovieModel> movieList = box!.values.map((value) => value as LocalMovieModel).toList();
-     for (var element in movieList) { 
-      //element.isInBox;
+  //! get All Data from Local DB -->Hive
+  Future<List<LocalMovieModel>> getAllDataFromLocal() async {
+    var box = await creatBoxDb();
+    List<LocalMovieModel> movieList =
+        box!.values.map((value) => value as LocalMovieModel).toList();
+    for (var element in movieList) {
       debugPrint('------->${element.id}');
-      debugPrint('------->${element.title}');
-      debugPrint('------->${element.date}');
-      debugPrint('------->${element.imageUrl}');
-      debugPrint('-------------------------------------');
-      }
-      debugPrint('${movieList.length}');
-      movieListToAll=movieList;
-      debugPrint('movieListToAll = $movieListToAll ');
-      notifyListeners();
-      return movieListToAll;
-     
+    }
+    return movieList;
   }
 
- //!deleteItemByIndex
- //?the list index and DB index is the same
- deleteItemFromLocal(int? index)async{
-  var box =await creatBoxDb();
-    try{
-     box?.deleteAt(index!);
-     movieListToAll.removeAt(index!);
-     CasheHelper().getAllDataFromLocal();
-     notifyListeners();
-     debugPrint('--->$index is deleted ..!!<---');
-    }
-    catch(error){
+  //!deleteItemByIndex
+  //?the list index and DB index is the same
+  void deleteItemFromLocal(int? index) async {
+    var box = await creatBoxDb();
+    try {
+      box?.deleteAt(index!);
+      debugPrint('--->$index is deleted ..!!<---');
+    } catch (error) {
       debugPrint('--->$error<---');
     }
-    
- }
+  }
 
- //! check if the movie is in Local list or not 
- Future<bool?> checkMovieIsExist({required num? id})async{
-  var box =await creatBoxDb();
-  bool isExist=false;
-  List<LocalMovieModel> movieList = box!.values.map((value) => value as LocalMovieModel).toList();
-  for (var element in movieList) { 
-    if(element.id==id){
-       isExist= true;
-       debugPrint('true');
-       return true;
+  //! check if the movie is in Local list or not
+  Future<bool> checkMovieIsExist({required num id}) async {
+    var box = await creatBoxDb();
+    List<LocalMovieModel> movieList =
+        box!.values.map((value) => value as LocalMovieModel).toList();
+    for (var element in movieList) {
+      if (element.id == id) {
+        return true;
       }
-      isExist= false;
-      debugPrint('false');
- }
- notifyListeners();
-return isExist;
-
-}
+    }
+    return false;
+  }
 
   //!Creat Hive Box Database
   Future<void> clearBoxDb() async {
     try {
       var box = await Hive.openBox('movie');
-      debugPrint('Box is created !!');
+      debugPrint('Box is deleted!!');
       box.clear();
-
     } catch (error) {
       debugPrint('---->$error');
     }
-    return null;
   }
-
 }

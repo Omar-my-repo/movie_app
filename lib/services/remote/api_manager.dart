@@ -4,10 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:route_movies_app/models/movie_details.dart';
 import 'package:route_movies_app/models/popular.dart';
-import 'package:route_movies_app/services/local/cash_helper.dart';
 import 'package:route_movies_app/shared/contants.dart';
 
-import '../../models/latest.dart';
 import '../../models/trailers.dart';
 
 class ApiManager {
@@ -29,10 +27,9 @@ class ApiManager {
     }
   }
 
-  static Future<Latest> getLatestMovie() async {
-    var json = await getJsonResponse(endPoint: latestMovieEndPoint);
-
-    Latest movie = Latest.fromJson(json);
+  static Future<Popular> getLatestMovie() async {
+    var json = await getJsonResponse(endPoint: '/3/trending/all/day');
+    Popular movie = Popular.fromJson(json);
     return movie;
   }
 

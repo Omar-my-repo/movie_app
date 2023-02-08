@@ -1,17 +1,15 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:route_movies_app/models/movie.dart';
-import 'package:route_movies_app/screens/details-screen/details_view.dart';
-import 'package:route_movies_app/screens/shared_widgets/movie_image_item.dart';
+import 'package:provider/provider.dart';
+import 'package:route_movies_app/base.dart';
+import 'package:route_movies_app/screens/home_screen/home_vm.dart';
+import 'package:route_movies_app/screens/home_screen/new_released_section.dart';
+import 'package:route_movies_app/screens/home_screen/recommended_section.dart';
 import 'package:route_movies_app/screens/home_screen/shimmer_ui/newreleased_section_shimmer.dart';
 import 'package:route_movies_app/screens/home_screen/shimmer_ui/top_rated_section_shimmer.dart';
-import 'package:route_movies_app/screens/shared_widgets/top_rated_item.dart';
 import 'package:route_movies_app/screens/home_screen/top_side_section.dart';
-import 'package:route_movies_app/services/local/cash_helper.dart';
 
-import '../../models/latest.dart';
-import '../../models/popular.dart';
-import '../../services/remote/api_manager.dart';
 import 'shimmer_ui/top_section_shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,196 +19,112 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel> {
+  @override
+  void initState() {
+    super.initState();
+    viewModel.getLatestMovies();
+    viewModel.getPopularMovies();
+    viewModel.getTopRatedMovies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () async{
-        setState(() {
-          
-        });
+      onRefresh: () async {
+        viewModel.getLatestMovies();
       },
-      child: Container(
-        color: Theme.of(context).primaryColor,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              FutureBuilder<Latest>(
-                  future: ApiManager.getLatestMovie(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const TopSectionShimmer();
-                    }
-                    if (snapshot.hasError) {
-                      return const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 30),
-                        child: Center(
-                          child: Text(
-                            'Something went wrong pleas check your internet connection',
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+      child: ChangeNotifierProvider(
+        create: (context) => viewModel,
+        child: Container(
+          color: Theme.of(context).primaryColor,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Consumer<HomeViewModel>(
+                  builder: (_, homeViewModel, __) {
+                    if (homeViewModel.topSectionErrorMessage != null) {
+                      return const Center(
+                        child: Text('SomeThingWentWrong, check your connction'),
                       );
                     }
-                    if (snapshot.data?.statusMessage != null) {
-                      return Center(child: Text(snapshot.data!.statusMessage!));
+                    if (homeViewModel.topSectionMovie == null) {
+                      //معناه ان الليست لسه بتلوود
+                      return const TopSectionShimmer();
+                    } else {
+                      return TopSideSection(homeViewModel.topSectionMovie!);
                     }
-                    Latest movie = snapshot.data!;
-                    print(movie.posterPath);
-                    print(movie.backdropPath);
-          
-                    //removing adult movies from showing off
-                    Latest? newMovie;
-                    if (movie.adult == false) {
-                      newMovie = movie;
-                      return TopSideSection(newMovie);
-                    }
-                    print('===adult movie has been blocked===');
-                    print('-------> movie Id : ${movie.id}');
-                    return TopSideSection(newMovie);
-                  }),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                color: Theme.of(context).colorScheme.background,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'New Released',
-                      style: Theme.of(context).textTheme.subtitle2,
-                    ),
-                    const SizedBox(height: 10),
-                    FutureBuilder<Popular>(
-                      future: ApiManager.getPopularMovies(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                  },
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  color: Theme.of(context).colorScheme.background,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'New Released',
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
+                      const SizedBox(height: 10),
+                      Consumer<HomeViewModel>(builder: (_, homeViewModel, __) {
+                        if (homeViewModel.newReleasedErrorMessage != null) {
+                          return const Center(
+                            child: Text(
+                                'SomeThing Went Wrong, check your connction'),
+                          );
+                        }
+                        if (homeViewModel.newReleasedMovies == null) {
+                          //معناه ان الليست لسه بتلوود
                           return const NewReleasedSectionShimmer();
                         }
-                        if (snapshot.hasError) {
-                          return const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 30),
-                            child: Center(
-                              child: Text(
-                                'Something went wrong pleas check your internet connection',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          );
-                        }
-                        if (snapshot.data?.statusMessage != null) {
-                          return Center(
-                              child: Text(snapshot.data!.statusMessage!));
-                        }
-                        List<Movie> movies = snapshot.data!.results ?? [];
-                        
-                        return SizedBox(
-                          height: 130,
-                          child: ListView.separated(
-                              itemCount: movies.length,
-                              scrollDirection: Axis.horizontal,
-                              separatorBuilder: (context, index) {
-                                return const SizedBox(width: 16);
-                              },
-                              itemBuilder: (context, index) {
-                                debugPrint('index : $index');
-                                return SizedBox(
-                                  width: 100,
-                                  child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => DetailsScreen(
-                                                  movieId: movies[index]
-                                                      .id),
-                                            ));
-                                      },
-                                      child: movie_image_item(
-                                        id:movies[index].id?.toInt(),
-                                        date:movies[index].releaseDate,
-                                        posterPath: movies[index].posterPath,
-                                        title:movies[index].title,
-                                        description: movies[index].overview,
-          
-                                      )),
-                                );
-                              }),
-                        );
-                      },
-                    ),
-                  ],
+                        return NewReleasdSection(
+                            homeViewModel.newReleasedMovies!);
+                      }),
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                color: Theme.of(context).colorScheme.background,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Recommended',
-                      style: Theme.of(context).textTheme.subtitle2,
-                    ),
-                    const SizedBox(height: 10),
-                    FutureBuilder<Popular>(
-                      future: ApiManager.getTopRatedMovies(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  color: Theme.of(context).colorScheme.background,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Recommended',
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
+                      const SizedBox(height: 10),
+                      Consumer<HomeViewModel>(builder: (_, homeViewModel, __) {
+                        if (homeViewModel.recommendedSectionErrorMessage !=
+                            null) {
+                          return const Center(
+                            child: Text(
+                                'SomeThing Went Wrong, check your connction'),
+                          );
+                        } else if (homeViewModel.recommendedSectionMovies ==
+                            null) {
                           return const TopRatedSectionShimmer();
                         }
-                        if (snapshot.hasError) {
-                          return const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 30),
-                            child: Center(
-                              child: Text(
-                                'Something went wrong pleas check your internet connection',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          );
-                        }
-                        if (snapshot.data?.statusMessage != null) {
-                          return Center(
-                              child: Text(snapshot.data!.statusMessage!));
-                        }
-                        List<Movie> movies = snapshot.data!.results ?? [];
-          
-                        return SizedBox(
-                          height: 210,
-                          child: ListView.separated(
-                              itemCount: movies.length,
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              separatorBuilder: (context, index) {
-                                return const SizedBox(width: 16);
-                              },
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                    onTap: (() {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => DetailsScreen(
-                                                movieId:
-                                                    movies[index].id),
-                                          ));
-                                    }),
-                                    child: SizedBox(
-                                      width: 100,
-                                      child: TopRatedItem(movies[index]),
-                                    ));
-                              }),
-                        );
-                      },
-                    ),
-                  ],
+                        return RecommendedSection(
+                            homeViewModel.recommendedSectionMovies!);
+                      })
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  @override
+  HomeViewModel initViewModel() {
+    return HomeViewModel();
   }
 }
