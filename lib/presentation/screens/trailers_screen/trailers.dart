@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:route_movies_app/models/trailers.dart';
 import 'package:route_movies_app/data/data_sources/services/remote/api_manager.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import '../../../data/models/trailers.dart';
 
 class TrailerScreen extends StatefulWidget {
   final num? id;

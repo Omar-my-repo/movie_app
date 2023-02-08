@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:route_movies_app/data/repository/repository_impl.dart';
+import 'package:route_movies_app/domain/use_cases/movie_use_cases.dart';
 import 'package:route_movies_app/presentation/screens/details-screen/details_view.dart';
 import 'package:route_movies_app/presentation/screens/home_layout/home_layout.dart';
 import 'package:route_movies_app/data/data_sources/services/local/cash_helper.dart';
@@ -16,8 +18,8 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(LocalMovieModelAdapter());
   await casheHelper.creatBoxDb();
-  await casheHelper.getAllDataFromLocal();
-  await casheHelper.clearBoxDb();
+  //await casheHelper.getAllDataFromLocal();
+  //await casheHelper.clearBoxDb();
   //casheHelper.deleteItemFromLocal(0);
   //bool x=await casheHelper.checkMovieIsExist(50000);
   //debugPrint('$x');
@@ -29,10 +31,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<WatchListViewModel>(
-        create: (_) => WatchListViewModel(),
-          builder: (context, child) {
-          return MaterialApp(
+    return MaterialApp(
             debugShowCheckedModeBanner: false,
             initialRoute: HomeLayout.routeName,
             routes: {
@@ -41,9 +40,7 @@ class MyApp extends StatelessWidget {
             },
             theme: MyThemeData.darkTheme,
           );
-        });
-    //edited by omar
-
+        }
 
   }
-}
+

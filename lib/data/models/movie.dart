@@ -1,3 +1,5 @@
+import 'package:route_movies_app/domain/Entity/movie_entity.dart';
+
 /// poster_path : "/cezWGskPY5x7GaglTTRN4Fugfb8.jpg"
 /// adult : false
 /// overview : "When an unexpected enemy emerges and threatens global safety and security, Nick Fury, director of the international peacekeeping agency known as S.H.I.E.L.D., finds himself in need of a team to pull the world back from the brink of disaster. Spanning the globe, a daring recruitment effort begins!"
@@ -13,7 +15,7 @@
 /// video : false
 /// vote_average : 7.33
 
-class Movie {
+class Movie extends MovieEntity{
   Movie({
     this.posterPath,
     this.adult,
@@ -29,7 +31,23 @@ class Movie {
     this.voteCount,
     this.video,
     this.voteAverage,
-  });
+  }):super(
+    posterPath:posterPath,
+    adult: adult,
+    overview:overview,
+    backdropPath:backdropPath,
+    genreIds:genreIds,
+    id: id,
+    originalLanguage: originalLanguage,
+    originalTitle: originalTitle,
+    popularity: popularity,
+    releaseDate: releaseDate,
+    title: title,
+    video: video,
+    voteAverage: voteAverage,
+    voteCount: voteCount,
+    
+  );
 
   Movie.fromJson(dynamic json) {
     posterPath = json['poster_path'];

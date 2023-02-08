@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 import '../../../models/watch_list.dart';
 
-class CasheHelper {
+class CasheHelper extends ChangeNotifier {
 
   //bool isExist=false;
   List<LocalMovieModel> movieListToAll=[];
@@ -78,18 +78,18 @@ class CasheHelper {
  //! check if the movie is in Local list or not 
  Future<bool?> checkMovieIsExist({required num? id})async{
   var box =await creatBoxDb();
-  bool isExist=false;
+  //bool? isExist=false;
   List<LocalMovieModel> movieList = box!.values.map((value) => value as LocalMovieModel).toList();
   for (var element in movieList) { 
     if(element.id==id){
-       isExist= true;
+       //isExist= true;
        debugPrint('true');
        return true;
       }
-      isExist= false;
-      debugPrint('false');
+      //isExist= false;
+      //debugPrint('false');
  }
-return isExist;
+return false;
 
 }
 

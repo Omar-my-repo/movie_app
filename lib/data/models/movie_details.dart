@@ -27,6 +27,19 @@ import 'movie.dart';
 /// vote_count : 3439
 
 class MovieDetails extends Movie {
+  
+  dynamic belongsToCollection;
+  num? budget;
+  List<Genres>? genres;
+  String? homepage;
+  String? imdbId;
+  List<ProductionCompanies>? productionCompanies;
+  List<ProductionCountries>? productionCountries;
+  num? revenue;
+  num? runtime;
+  List<SpokenLanguages>? spokenLanguages;
+  String? status;
+  String? tagline;
   MovieDetails({
     this.belongsToCollection,
     this.budget,
@@ -89,19 +102,6 @@ class MovieDetails extends Movie {
     voteAverage = json['vote_average'];
     voteCount = json['vote_count'];
   }
-
-  dynamic belongsToCollection;
-  num? budget;
-  List<Genres>? genres;
-  String? homepage;
-  String? imdbId;
-  List<ProductionCompanies>? productionCompanies;
-  List<ProductionCountries>? productionCountries;
-  num? revenue;
-  num? runtime;
-  List<SpokenLanguages>? spokenLanguages;
-  String? status;
-  String? tagline;
 }
 
 /// iso_639_1 : "en"
