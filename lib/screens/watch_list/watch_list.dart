@@ -18,22 +18,22 @@ class WatchList extends StatefulWidget {
 class _WatchListState extends BaseView<WatchList, WatchListViewModel>
     implements WatchListNavigator {
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  WatchListViewModel initViewModel() {
+    return WatchListViewModel();
   }
 
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<FavoritesProvider>(context);
+
     if (provider.isDataLoaded == false) {
       provider.getAllDataFromLocal();
     }
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
       color: Theme.of(context).primaryColor,
       child: Consumer<FavoritesProvider>(builder: (_, favoritesProvider, __) {
-        //List<LocalMovieModel> watchList=myProvider.movieListToAll;
         if (favoritesProvider.errorMessage != null) {
           return Center(
             child: Text(favoritesProvider.errorMessage!),
@@ -123,10 +123,5 @@ class _WatchListState extends BaseView<WatchList, WatchListViewModel>
         );
       }),
     );
-  }
-
-  @override
-  WatchListViewModel initViewModel() {
-    return WatchListViewModel();
   }
 }

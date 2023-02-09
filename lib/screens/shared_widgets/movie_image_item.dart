@@ -51,7 +51,6 @@ class _movie_image_itemState extends State<movie_image_item> {
             ),
             InkWell(
               onTap: () async {
-                // bool isExist=await watchListViewModel.checkMovieIsExist(id:widget.id!);
                 if (isMoviesExistInLocal == false) {
                   favoritesProvider.storeDataLocally(
                       id: widget.id,
@@ -61,18 +60,6 @@ class _movie_image_itemState extends State<movie_image_item> {
                       description: widget.description ?? '');
                 } else {
                   favoritesProvider.deleteItemFromLocal(widget.id!);
-                  // watchListViewModel.deleteItemFromLocal(widget.id!.toInt());
-                  // List<LocalMovieModel> x =
-                  //     await CasheHelper().getAllDataFromLocal();
-                  // for (int i = 0; i < x.length; i++) {
-                  //   if (x[i].id == widget.id) {
-                  //     CasheHelper().deleteItemFromLocal(i);
-                  //     //myProvider.movieListToAll.removeAt(i);
-                  //   }
-                  //}
-                  //myProvider.movieListToAll.removeWhere((element) => element.id==widget.id);
-                  // isExist = false;
-
                 }
               },
               child: Stack(

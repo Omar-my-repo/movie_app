@@ -21,9 +21,7 @@ class _TrailerScreenState extends State<TrailerScreen> {
       body: FutureBuilder<TrailersModel>(
           future: ApiManager.getMovieTrailerByID(widget.id!),
           builder: (context, snapshot) {
-            TrailersModel trailers = snapshot.data!;
             if (snapshot.connectionState == ConnectionState.waiting ||
-
                 widget.id == null) {
               return Image.asset(
                 'assets/images/loading.gif',
@@ -34,25 +32,21 @@ class _TrailerScreenState extends State<TrailerScreen> {
             } else if (snapshot.hasError) {
               return Image.asset(
                 'assets/images/loading.gif',
-
-              height: double.infinity,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            );
-          }
-
+                height: double.infinity,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              );
+            }
+            Results trailers = snapshot.data!.results!.first;
             if (trailers.id == null) {
               return const Center(child: Text('No Trailer for this Movie'));
             }
-
-
             final YoutubePlayerController controller = YoutubePlayerController(
-              initialVideoId: trailers.key ?? '',
+              initialVideoId: trailers.key!,
               flags: const YoutubePlayerFlags(
                 autoPlay: true,
                 mute: false,
                 enableCaption: true,
-
               ),
             );
             return Column(

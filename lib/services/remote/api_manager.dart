@@ -72,11 +72,12 @@ class ApiManager {
 
   static  Future<TrailersModel> getMovieTrailerByID(num id) async {
     String trailersEndPount = '/3/movie/$id/videos';
-    var json = await getJsonResponse(endPoint: trailersEndPount, query: trailersEndPount);
+    var json = await getJsonResponse(endPoint: trailersEndPount);
+    print('======////////////////////////==========');
     print(json.toString());
-    TrailersModel moviesTrailer = TrailersModel.fromJson(json);
-    //Results results = Results.fromJson(json);
-    return moviesTrailer;
+    // TrailersModel moviesTrailer = TrailersModel.fromJson(json);
+    TrailersModel results = TrailersModel.fromJson(json);
+    return results;
   }
 
 }

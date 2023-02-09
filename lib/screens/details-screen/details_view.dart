@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:route_movies_app/screens/shared_widgets/top_rated_item.dart';
 import 'package:route_movies_app/screens/trailers_screen/trailers.dart';
 import 'package:route_movies_app/services/remote/api_manager.dart';
+
 import '../../shared/contants.dart';
 import '../shared_widgets/movie_image_item.dart';
 import 'details_widgets.dart';
@@ -153,6 +154,15 @@ class DetailsScreen extends StatelessWidget {
                   FutureBuilder(
                       future: ApiManager.getRecommendedMovie(movieId!),
                       builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Image.asset(
+                            'assets/images/loading.gif',
+                            height: 280,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          );
+                        }
                         if (snapshot.hasError) {
                           return Image.asset(
                             'assets/images/loading.gif',
@@ -176,7 +186,7 @@ class DetailsScreen extends StatelessWidget {
                               Expanded(
                                 child: ListView.separated(
                                   separatorBuilder: (context, index) =>
-                                      const SizedBox(
+                                  const SizedBox(
                                     width: 5,
                                   ),
                                   scrollDirection: Axis.horizontal,

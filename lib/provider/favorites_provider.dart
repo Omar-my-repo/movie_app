@@ -13,7 +13,7 @@ class FavoritesProvider extends ChangeNotifier {
     try {
       var movies = await CasheHelper().getAllDataFromLocal();
       localMovies = movies;
-      print('====>local length: ${localMovies.length}');
+
       isDataLoaded = true;
       notifyListeners();
       print('====>local length: ${localMovies.length}');
@@ -48,6 +48,7 @@ class FavoritesProvider extends ChangeNotifier {
           date: date,
           imageUrl: imageUrl,
           description: description);
+      // هنا ممكن نضيف لليست ع لطول وبعدين ننوتفاي ليستنر
       getAllDataFromLocal();
     } catch (e) {}
   }
@@ -61,8 +62,6 @@ class FavoritesProvider extends ChangeNotifier {
         notifyListeners();
         return;
       }
-      // notifyListeners();
-      // // CasheHelper().deleteItemFromLocal(index);
     }
   }
 }
