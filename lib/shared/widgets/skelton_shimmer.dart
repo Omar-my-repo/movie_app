@@ -4,7 +4,7 @@ class SkeltonShimmer extends StatelessWidget {
   double width;
   double height;
 
-  SkeltonShimmer({required this.width, required this.height});
+  SkeltonShimmer({super.key, required this.width, required this.height});
 
   @override
   Widget build(BuildContext context) {

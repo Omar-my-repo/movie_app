@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:route_movies_app/data/repository/repository_impl.dart';
-import 'package:route_movies_app/domain/use_cases/movie_use_cases.dart';
 import 'package:route_movies_app/presentation/screens/details-screen/details_view.dart';
 import 'package:route_movies_app/presentation/screens/home_layout/home_layout.dart';
 import 'package:route_movies_app/data/data_sources/services/local/cash_helper.dart';
-import 'package:route_movies_app/presentation/screens/watch_list/watch_list_view_model.dart';
+import 'package:route_movies_app/presentation/watch_list_provider/watch_list_provider.dart';
 import 'package:route_movies_app/style/my_themedata.dart';
-
 import 'data/models/watch_list.dart';
 
 CasheHelper casheHelper = CasheHelper();
@@ -24,7 +20,9 @@ void main() async {
   //bool x=await casheHelper.checkMovieIsExist(50000);
   //debugPrint('$x');
 
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider<WatchListProvider>(
+    create: (_) => WatchListProvider(),
+    child: const MyApp()));
 }
 // added new branch
 class MyApp extends StatelessWidget {

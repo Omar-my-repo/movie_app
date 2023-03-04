@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:route_movies_app/presentation/watch_list_provider/watch_list_provider.dart';
 
 import '../../../data/models/watch_list.dart';
-import '../watch_list/watch_list_view_model.dart';
 
 class movie_image_item extends StatelessWidget {
   num? id;
@@ -21,15 +21,16 @@ class movie_image_item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String? url = 'http://image.tmdb.org/t/p/w500$posterPath';
-    return Consumer<CashedDataViewModel>(
+    bool isExist=Provider.of<WatchListProvider>(context).checkMovieIsExist(id:id);
+    return Consumer<WatchListProvider>(
       builder: (context, value, child) {
-      value.watchList;
-      //value.getAllDataFromLocal();
-      return FutureBuilder(
-              future: CashedDataViewModel().checkMovieIsExist(id: id),
-              builder: (context, snapshot) {
-                bool? isExist = snapshot.data;
-                return ClipRRect(
+      //value.localMovies;
+      if(value.isDataLoaded==false){
+        value.getAllDataFromLocal();
+      }
+      
+      //bool isExist=value.checkMovieIsExist(id:id);
+      return ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Stack(
                     children: [
@@ -64,8 +65,8 @@ class movie_image_item extends StatelessWidget {
                               ),
                       ),
                       InkWell(
-                        onTap: () async {
-                          isExist = await value.checkMovieIsExist(id: id);
+                        onTap: (){
+                          isExist =  value.checkMovieIsExist(id: id);
                           if (isExist == false) {
                             value.storeDataLocally(
                                 id: id,
@@ -73,20 +74,16 @@ class movie_image_item extends StatelessWidget {
                                 date: date ?? '',
                                 imageUrl: url,
                                 description: description ?? '');
-                            value.watchList.add(LocalMovieModel(id!, title ?? '',
+                            value.localMovies.add(LocalMovieModel(id!, title ?? '',
                                 date ?? '', url, description ?? ''));
                             //value.getAllDataFromLocal();
                             isExist = true;
                           } else if (isExist == true) {
-                            List<LocalMovieModel> x =
-                                await value.getAllDataFromLocal();
-                            for (int i = 0; i < x.length; i++) {
-                              if (x[i].id == id) {
-                                value.deleteItemFromLocal(i);
-                                value.watchList.removeAt(i);
-                              }
-                            }
-        
+                                value.deleteItemFromLocal(id!);
+                                //value.localMovies.removeAt(i);
+                              
+                            
+                            //value.getAllDataFromLocal();
                             isExist = false;
                           }
                         },
@@ -131,8 +128,8 @@ class movie_image_item extends StatelessWidget {
                   ),
                 );
               });
-      });
+      }
       
     }
-  }
+  
 

@@ -1,3 +1,5 @@
+
+
 import 'movie.dart';
 
 /// status_message : "Invalid API key: You must be granted a valid key."
@@ -9,17 +11,25 @@ import 'movie.dart';
 /// total_pages : 982
 
 class Popular {
+  String? statusMessage;
+   bool? success;
+   num? statusCode;
+   num? page;
+   List<Movie>? results;
+   num? totalResults;
+   num? totalPages;
+
   Popular({
-    this.statusMessage,
-    this.success,
-    this.statusCode,
-    this.page,
-    this.results,
-    this.totalResults,
-    this.totalPages,
+   this.statusMessage,
+   this.success,
+   this.statusCode,
+   this.page,
+   this.results,
+   this.totalResults,
+   this.totalPages
   });
 
-  Popular.fromJson(dynamic json) {
+   Popular.fromJson(Map<String, dynamic> json) {
     statusMessage = json['status_message'];
     success = json['success'];
     statusCode = json['status_code'];
@@ -33,14 +43,6 @@ class Popular {
     totalResults = json['total_results'];
     totalPages = json['total_pages'];
   }
-
-  String? statusMessage;
-  bool? success;
-  num? statusCode;
-  num? page;
-  List<Movie>? results;
-  num? totalResults;
-  num? totalPages;
 }
 
 /// poster_path : "/e1mjopzAS2KNsvpbpahQ1a6SkSn.jpg"

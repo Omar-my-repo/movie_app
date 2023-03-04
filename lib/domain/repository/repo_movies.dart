@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:route_movies_app/data/repository/repository_impl.dart';
 
 import '../../data/models/Latest.dart';
 import '../../data/models/movie_details.dart';
@@ -7,7 +8,6 @@ import '../../data/models/trailers.dart';
 import '../../data/models/watch_list.dart';
 
 abstract class MovieRepository {
-
   //! Remote Repo Abstracts Functions
   Future<Latest> getLatestMovie();
   Future<Popular> getPopularMovies();
@@ -17,7 +17,6 @@ abstract class MovieRepository {
   Future<Popular> searchMovieByName(String movieName);
   Future<TrailersModel> getMovieTrailerByID(num id);
 
-  
   //! Local Repo Abstracts Functions
   Future<Box<dynamic>?> creatBoxDb();
   void storeDataLocally(

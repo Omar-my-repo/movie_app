@@ -13,10 +13,11 @@ class ApiManager {
   static getJsonResponse({required String endPoint, String? query}) async {
     try {
       Uri url;
-      if (query == null)
+      if (query == null) {
         url = Uri.https(baseApi, endPoint, {'api_key': apiKey});
-      else
+      } else {
         url = Uri.https(baseApi, endPoint, {'api_key': apiKey, 'query': query});
+      }
 
       Response response = await http.get(url);
       var json = jsonDecode(response.body);

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:route_movies_app/data/data_sources/services/local/cash_helper.dart';
+import 'package:route_movies_app/data/repository/repository_impl.dart';
+import 'package:route_movies_app/domain/repository/repo_movies.dart';
+import 'package:route_movies_app/domain/use_cases/use_case.dart';
 import 'package:route_movies_app/presentation/screens/shared_widgets/top_rated_item.dart';
 import 'package:route_movies_app/presentation/screens/trailers_screen/trailers.dart';
 import 'package:route_movies_app/data/data_sources/services/remote/api_manager.dart';
 import '../../../shared/contants.dart';
 import '../shared_widgets/movie_image_item.dart';
-import '../watch_list/watch_list_view_model.dart';
 import 'details_widgets.dart';
 
 class DetailsScreen extends StatelessWidget {
@@ -13,15 +16,13 @@ class DetailsScreen extends StatelessWidget {
   DetailsScreen({this.movieId, super.key});
 
   static const String routeName = 'DetailsScreen';
-   CashedDataViewModel vm =CashedDataViewModel();
+   MovieUseCases vm =MovieUseCases(repo:MovieRepoImpl(local: CasheHelper(),remot:ApiManager()));
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
 
-    return ChangeNotifierProvider(
-      create: (context) => vm,
-      child: FutureBuilder(
-          future: ApiManager.getMovieDetails(movieId!),
+    return FutureBuilder(
+          future: vm.getMovieDetails(movieId!),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting ||
                 movieId == null) {
@@ -155,7 +156,7 @@ class DetailsScreen extends StatelessWidget {
                       ),
                     ),
                     FutureBuilder(
-                        future: ApiManager.getRecommendedMovie(movieId!),
+                        future: vm.getRecommendedMovie(movieId!),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return Image.asset(
@@ -209,7 +210,7 @@ class DetailsScreen extends StatelessWidget {
                 ),
               ),
             );
-          }),
-    );
+          });
+    
   }
 }

@@ -7,11 +7,13 @@ import 'package:route_movies_app/presentation/screens/home_screen/shimmer_ui/new
 import 'package:route_movies_app/presentation/screens/home_screen/shimmer_ui/top_rated_section_shimmer.dart';
 import 'package:route_movies_app/presentation/screens/shared_widgets/top_rated_item.dart';
 import 'package:route_movies_app/presentation/screens/home_screen/top_side_section.dart';
-import 'package:route_movies_app/presentation/screens/watch_list/watch_list_view_model.dart';
 import '../../../data/models/Latest.dart';
 import '../../../data/models/movie.dart';
 import '../../../data/models/popular.dart';
 import '../../../data/data_sources/services/remote/api_manager.dart';
+import '../../../data/repository/repository_impl.dart';
+import '../../../domain/use_cases/use_case.dart';
+import '../../watch_list_provider/watch_list_provider.dart';
 import 'shimmer_ui/top_section_shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,10 +24,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  MovieUseCases useCase =MovieUseCases(repo:MovieRepoImpl(local: CasheHelper(),remot:ApiManager()));
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => CashedDataViewModel(),
+      create: (context) => WatchListProvider(),
       child: RefreshIndicator(
         onRefresh: () async{
           setState(() {
@@ -38,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 FutureBuilder<Latest>(
-                    future: ApiManager.getLatestMovie(),
+                    future: useCase.getLatestMovie(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const TopSectionShimmer();
@@ -84,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 10),
                       FutureBuilder<Popular>(
-                        future: ApiManager.getPopularMovies(),
+                        future: useCase.getPopularMovies(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
                             return const NewReleasedSectionShimmer();
@@ -156,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 10),
                       FutureBuilder<Popular>(
-                        future: ApiManager.getTopRatedMovies(),
+                        future: useCase.getTopRatedMovies(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
                             return const TopRatedSectionShimmer();

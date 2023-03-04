@@ -1,4 +1,4 @@
-import 'package:route_movies_app/domain/Entity/movie_entity.dart';
+
 
 /// poster_path : "/cezWGskPY5x7GaglTTRN4Fugfb8.jpg"
 /// adult : false
@@ -15,7 +15,7 @@ import 'package:route_movies_app/domain/Entity/movie_entity.dart';
 /// video : false
 /// vote_average : 7.33
 
-class Movie extends MovieEntity{
+class Movie{
   Movie({
     this.posterPath,
     this.adult,
@@ -31,23 +31,7 @@ class Movie extends MovieEntity{
     this.voteCount,
     this.video,
     this.voteAverage,
-  }):super(
-    posterPath:posterPath,
-    adult: adult,
-    overview:overview,
-    backdropPath:backdropPath,
-    genreIds:genreIds,
-    id: id,
-    originalLanguage: originalLanguage,
-    originalTitle: originalTitle,
-    popularity: popularity,
-    releaseDate: releaseDate,
-    title: title,
-    video: video,
-    voteAverage: voteAverage,
-    voteCount: voteCount,
-    
-  );
+  });
 
   Movie.fromJson(dynamic json) {
     posterPath = json['poster_path'];

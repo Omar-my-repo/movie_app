@@ -7,7 +7,7 @@ import '../../../shared/contants.dart';
 class TopRatedItem extends StatelessWidget {
   Movie movie;
 
-  TopRatedItem(this.movie);
+  TopRatedItem(this.movie, {super.key});
 
   @override
   Widget build(BuildContext context) {

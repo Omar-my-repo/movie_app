@@ -9,7 +9,7 @@ class MyThemeData {
       color: darkPrimaryColor,
       elevation: 0,
       centerTitle: true,
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         color: Colors.white,
       ),
     ),

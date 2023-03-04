@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:route_movies_app/data/repository/repository_impl.dart';
-import 'package:route_movies_app/domain/use_cases/movie_use_cases.dart';
 import 'package:route_movies_app/presentation/screens/details-screen/details_view.dart';
-import 'package:route_movies_app/data/data_sources/services/local/cash_helper.dart';
-import 'package:route_movies_app/presentation/screens/watch_list/watch_list_view_model.dart';
+import '../../watch_list_provider/watch_list_provider.dart';
 import '../shared_widgets/movie_image_item.dart';
 
 class WatchList extends StatefulWidget {
@@ -15,21 +12,20 @@ class WatchList extends StatefulWidget {
 }
 
 class _WatchListState extends State<WatchList> {
-  CashedDataViewModel vm = CashedDataViewModel();
-
+  
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: vm.getAllDataFromLocal(),
-      builder: (context, snapshot) {
-        return ChangeNotifierProvider(
-            create: (context) => vm,
-            child: Consumer<CashedDataViewModel>(
+    return ChangeNotifierProvider(
+            create: (context) => WatchListProvider(),
+            child: Consumer<WatchListProvider>(
                 builder: (context, myProvider, child) {
-              myProvider.watchList;
-              myProvider.getAllDataFromLocal();
+              //myProvider.localMovies;
+              if(myProvider.isDataLoaded==false){
+                 myProvider.getAllDataFromLocal();
+              }
+              
               debugPrint(
-                  'movie List in watch list screen :  ${myProvider.watchList.length}');
+                  'movie List in watch list screen :  ${myProvider.localMovies.length}');
               //myProvider.getAllDataFromLocal();
               return Scaffold(
                     appBar: AppBar(
@@ -61,18 +57,18 @@ class _WatchListState extends State<WatchList> {
                                               MaterialPageRoute(
                                                 builder: (context) => DetailsScreen(
                                                     movieId: myProvider
-                                                        .watchList[index].id
+                                                        .localMovies[index].id
                                                         .toInt()),
                                               ));
                                         },
                                         child: movie_image_item(
-                                          id: myProvider.watchList[index].id,
-                                          date: myProvider.watchList[index].date,
+                                          id: myProvider.localMovies[index].id,
+                                          date: myProvider.localMovies[index].date,
                                           posterPath:
-                                              myProvider.watchList[index].imageUrl,
-                                          title: myProvider.watchList[index].title,
+                                              myProvider.localMovies[index].imageUrl,
+                                          title: myProvider.localMovies[index].title,
                                           description:
-                                              myProvider.watchList[index].description,
+                                              myProvider.localMovies[index].description,
                                         ),
                                       ),
                                     ),
@@ -91,7 +87,7 @@ class _WatchListState extends State<WatchList> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    myProvider.watchList[index].title,
+                                                    myProvider.localMovies[index].title,
                                                     overflow: TextOverflow.ellipsis,
                                                     textAlign: TextAlign.start,
                                                   ),
@@ -100,7 +96,7 @@ class _WatchListState extends State<WatchList> {
                                                   ),
                                                   Text(
                                                       myProvider
-                                                          .watchList[index].date,
+                                                          .localMovies[index].date,
                                                       overflow: TextOverflow.ellipsis,
                                                       textAlign: TextAlign.start),
                                                   const SizedBox(
@@ -108,7 +104,7 @@ class _WatchListState extends State<WatchList> {
                                                   ),
                                                   Text(
                                                     myProvider
-                                                        .watchList[index].description,
+                                                        .localMovies[index].description,
                                                     overflow: TextOverflow.ellipsis,
                                                     textAlign: TextAlign.start,
                                                     maxLines: 4,
@@ -123,13 +119,12 @@ class _WatchListState extends State<WatchList> {
                           },
                           separatorBuilder: (context, index) =>
                               const Divider(color: Colors.white),
-                          itemCount: myProvider.watchList.length),
+                          itemCount: myProvider.localMovies.length),
                     ),
                   );}
                 )
               );
       }
-    );
         }
-  }
+  
 
